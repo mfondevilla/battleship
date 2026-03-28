@@ -30,7 +30,7 @@ class Tablero:
                     fila = np.random.randint(0, self.dimension)
                     columna = np.random.randint(0, self.dimension)
 
-                    # comprobar que cabe horizontalmente
+                    # comprobar que cabe horizontalmente, pendiente hacerlo en todas las direcciones
                     if columna + tamaño <= self.dimension:
 
                         # comprobar que no hay barcos ya colocados
