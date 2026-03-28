@@ -1,5 +1,8 @@
 import numpy as np
 
+seed_partida = 1
+np.random.seed(seed_partida)
+
 dimension = 10
 agua = " "
 
@@ -19,12 +22,38 @@ class Tablero:
         
     def colocar_barcos(self):
         for cantidad, tamaño in barcos.items():
-            for c in range(cantidad):
-            
-    
+            for _ in range(cantidad):
+
+                colocado = False
+
+                while not colocado:
+                    fila = np.random.randint(0, self.dimension)
+                    columna = np.random.randint(0, self.dimension)
+
+                    # comprobar que cabe horizontalmente
+                    if columna + tamaño <= self.dimension:
+
+                        # comprobar que no hay barcos ya colocados
+                        libre = True
+                        for i in range(tamaño):
+                            if self.tablero_barcos[fila][columna + i] != agua:
+                                libre = False
+                                break
+
+                        # si está libre, colocamos
+                        if libre:
+                            for i in range(tamaño):
+                                self.tablero_barcos[fila][columna + i] = "O"
+                            colocado = True
+
+        return self.tablero_barcos
+
+
 jugador = Tablero("Jugador")
 maquina = Tablero("Maquina")
-disparos = Tablero("Disparos")
+jugador.colocar_barcos() 
+maquina.colocar_barcos()
 
-jugador.colocar_barcos()
+print(jugador.tablero_barcos)
+
     
