@@ -9,14 +9,8 @@ MISS = "*"
 VALID_LETTERS = "ABCDEFGHIJ"
 VALID_NUMBERS = list(range(1, BOARD_SIZE + 1))
 SHIPS = {
-    "length4": 4,
-    "length3": 3,
-    "length3": 3,
-    "length2": 2,
-    "length2": 2,
-    "length2": 2,
-    "length1": 1,
-    "length1": 1,
-    "length1": 1,
-    "length1": 1
+    1 : 4,
+    2 : 3,
+    3 : 2,
+    4 : 1
 }
