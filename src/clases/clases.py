@@ -1,5 +1,7 @@
 import numpy as np
 
+import variables
+
 seed_partida = 1
 np.random.seed(seed_partida)
 
