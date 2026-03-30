@@ -1,61 +1,115 @@
 import numpy as np
 
-import variables
-
 seed_partida = 1
 np.random.seed(seed_partida)
 
-dimension = 10
-agua = " "
-
-barcos = {
-    4 : 1,
-    3 : 2,
+BOARD_SIZE = 10
+WATER = "-"
+SHIP = "O"
+HIT = "X"
+MISS = "*"
+#validators
+VALID_LETTERS = "ABCDEFGHIJ"
+VALID_NUMBERS = list(range(1, BOARD_SIZE + 1))
+SHIPS = {
+    1 : 4,
     2 : 3,
-    1 : 4
+    3 : 2,
+    4 : 1
 }
 
 class Tablero:
-    def __init__(self, jugador):
-        self.jugador = jugador
-        self.dimension = dimension
-        self.tablero_barcos = np.full((dimension, dimension), agua)
-        self.tablero_disparos = np.full((dimension, dimension), agua)
+    def __init__(self, player_id):
+        self.player_id = player_id
+        self.BOARD_SIZE = BOARD_SIZE
+        self.tablero_barcos = np.full((self.BOARD_SIZE, self.BOARD_SIZE), WATER)
+        self.tablero_disparos = np.full((self.BOARD_SIZE, self.BOARD_SIZE), WATER)
         
-    def colocar_barcos(self):
-        for cantidad, tamaño in barcos.items():
+    def place_ships(self):
+        direcciones = {
+            "N" : (-1, 0),
+            "S" : (1, 0),
+            "E" : (0, 1),
+            "O" : (0, -1)
+        }
+        for cantidad, tamaño in SHIPS.items():
             for _ in range(cantidad):
 
                 colocado = False
 
                 while not colocado:
-                    fila = np.random.randint(0, self.dimension)
-                    columna = np.random.randint(0, self.dimension)
+                    fila = np.random.randint(0, self.BOARD_SIZE)
+                    columna = np.random.randint(0, self.BOARD_SIZE)
+                    
+                    direccion = np.random.choice(list(direcciones.keys()))
+                    df, dc = direcciones[direccion]
+                    
+                    posiciones = []
 
-                    # comprobar que cabe horizontalmente, pendiente hacerlo en todas las direcciones
-                    if columna + tamaño <= self.dimension:
+                    # generar todas las posiciones del barco
+                    for i in range(tamaño):
+                        f = fila + df * i
+                        c = columna + dc * i
 
-                        # comprobar que no hay barcos ya colocados
+                        # comprobar que está dentro del tablero
+                        if not (0 <= f < self.BOARD_SIZE and 0 <= c < self.BOARD_SIZE):
+                            break
+
+                        posiciones.append((f, c))
+
+                    # comprobar que tiene el tamaño correcto (no se salió)
+                    if len(posiciones) == tamaño:
+
                         libre = True
-                        for i in range(tamaño):
-                            if self.tablero_barcos[fila][columna + i] != agua:
+                        for f, c in posiciones:
+                            if self.tablero_barcos[f][c] != WATER:
                                 libre = False
                                 break
 
-                        # si está libre, colocamos
                         if libre:
-                            for i in range(tamaño):
-                                self.tablero_barcos[fila][columna + i] = "O"
+                            for f, c in posiciones:
+                                self.tablero_barcos[f][c] = SHIP
                             colocado = True
 
         return self.tablero_barcos
+    
+    def receive_shot(self, shot):
+        fila, columna = shot
+        
+        if not (0 <= fila < self.BOARD_SIZE and 0 <= columna < self.BOARD_SIZE):
+            return None, "Disparo fuera de rango"
+        
+        if self.tablero_barcos[fila][columna] == WATER:
+            self.tablero_barcos[fila][columna] = MISS
+            resultado = MISS, "Agua"
+            
+        elif self.tablero_barcos[fila][columna] == SHIP:
+            self.tablero_barcos[fila][columna] = HIT
+            resultado = HIT, "Tocado"
+            
+        elif self.tablero.barcos[fila][columna] in (HIT, MISS):
+            return None, "Ya disparado"
+            
+        return resultado
+    
+    def display(self, tablero):
+        # cabecera con letras
+        print("  " + " ".join(VALID_LETTERS[:self.BOARD_SIZE]))
+
+        # filas con números
+        for i in range(self.BOARD_SIZE):
+            numero_fila = str(i + 1).rjust(2)
+            fila = " ".join(tablero[i])
+            print(f"{numero_fila} {fila}")
 
 
-jugador = Tablero("Jugador")
-maquina = Tablero("Maquina")
-jugador.colocar_barcos() 
-maquina.colocar_barcos()
+    def display_barcos(self):
+        self.display(self.tablero_barcos)
 
-print(jugador.tablero_barcos)
+
+    def display_disparos(self):
+        self.display(self.tablero_disparos)
+        
+
 
     
