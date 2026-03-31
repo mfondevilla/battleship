@@ -1,6 +1,6 @@
 #variables/variables.py
 
-BOARD_SIZE = 10,
+BOARD_SIZE = 10
 WATER = "-"
 SHIP = "O"
 HIT = "X"
