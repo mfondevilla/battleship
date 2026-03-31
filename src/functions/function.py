@@ -63,6 +63,60 @@ def place_ships(board, SHIPS, SHIP, WATER, seed=None):
 #### board_player   = place_ships(board_player,   SHIPS, SHIP, WATER, seed=42)
 #### board_pc = place_ships(board_pc, SHIPS, SHIP, WATER, seed=99)
 
-print(f"Este es tu tablero, jugador:\n\n{board_player}")
+#### print(f"Este es tu tablero, jugador:\n\n{board_player}")
 
 ###### print(f"Este es el tablero del pc:\n\n{board_pc}") Sólo para testear, no hay que printear
+
+
+### función de disparo
+
+### PARA EL .PY from variables.variables import HIT, MISS, WATER, SHIP
+
+def shot(tablero_barcos, tablero_disparos, SHIP, WATER, HIT, MISS):
+    
+    # pedimos coordenadas para hacerlo interactivo
+    row = int(input("Elige fila (0-9): "))
+    col = int(input("Elige columna (0-9): "))
+
+    # comprobar si ya se ha disparado ahí
+    if tablero_disparos[row, col] in [HIT, MISS]:
+        print("Ya has disparado aquí, elige otra casilla.")
+        return shot(tablero_barcos, tablero_disparos, SHIP, WATER, HIT, MISS)
+
+    # comprobar si es tocado o agua
+    if tablero_barcos[row, col] == SHIP:
+        tablero_disparos[row, col] = HIT
+        print("¡Tocado!")
+    else:
+        tablero_disparos[row, col] = MISS
+        print("¡Agua!")
+
+    return tablero_disparos
+
+
+### función de disparo aleatorio del pc
+
+### PARA EL .PY from variables.variables import HIT, MISS, WATER, SHIP
+
+def random_shot(tablero_barcos, tablero_disparos, SHIP, WATER, HIT, MISS):
+    
+    while True:
+        # elegir coordenadas aleatorias
+        row = np.random.randint(0, tablero_barcos.shape[0])
+        col = np.random.randint(0, tablero_barcos.shape[1])
+
+        # comprobar si ya se ha disparado ahí
+        if tablero_disparos[row, col] not in [HIT, MISS]:
+            break
+
+    # comprobar si es tocado o agua
+    if tablero_barcos[row, col] == SHIP:
+        tablero_disparos[row, col] = HIT
+        print(f"¡El pc ha disparado en ({row}, {col}) y ha tocado!")
+    else:
+        tablero_disparos[row, col] = MISS
+        print(f"¡El pc ha disparado en ({row}, {col}) y ha fallado!")
+
+    return tablero_disparos
+
+#### random_shot(board_player, tablero_disparos_pc, SHIP, WATER, HIT, MISS)
