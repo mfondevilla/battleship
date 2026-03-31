@@ -20,14 +20,14 @@ def create_board (BOARD_SIZE, WATER):
     board = np.full((BOARD_SIZE, BOARD_SIZE), WATER)
     return board
 
-board_player = create_board (BOARD_SIZE, WATER)     ### crear tablero para jugador 
-board_pc = create_board (BOARD_SIZE, WATER)         ### crear tablero para la máquina
+#### board_player = create_board (BOARD_SIZE, WATER)     ### crear tablero para jugador 
+#### board_pc = create_board (BOARD_SIZE, WATER)         ### crear tablero para la máquina
 
 
 
 ### función de colocar barcos
 
-### PARA EL .PY from variables.variables import SHIPS
+from variables.variables import SHIPS
 
 def place_ships(board, SHIPS, SHIP, WATER, seed=None):
     np.random.seed(seed)
@@ -60,8 +60,8 @@ def place_ships(board, SHIPS, SHIP, WATER, seed=None):
 
     return board
 
-board_player   = place_ships(board_player,   SHIPS, SHIP, WATER, seed=42)
-board_pc = place_ships(board_pc, SHIPS, SHIP, WATER, seed=99)
+#### board_player   = place_ships(board_player,   SHIPS, SHIP, WATER, seed=42)
+#### board_pc = place_ships(board_pc, SHIPS, SHIP, WATER, seed=99)
 
 print(f"Este es tu tablero, jugador:\n\n{board_player}")
 
