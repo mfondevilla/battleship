@@ -187,5 +187,8 @@ class Tablero:
         self.display(self.tablero_disparos)
         
 
+class SalirJuego(Exception):
+    """Se lanza cuando el usuario decide abandonar la partida."""
+    pass
 
     
