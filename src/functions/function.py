@@ -153,3 +153,11 @@ def mostrar_menu():
             return opcion
         else:
             print("Opción no válida. Elige 1, 2 o 3.")
+
+
+#### Para limpiar la pantalla en cada ronda. Hay que llamarla en el main antes del turno 1, dentro del bucle. 
+
+import os
+
+def limpiar_pantalla():
+    os.system("cls" if os.name == "nt" else "clear")
