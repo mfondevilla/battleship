@@ -60,7 +60,7 @@ class Tablero:
             "O" : (0, -1)
         }
         
-        for cantidad, tamaño in SHIPS.items():
+        for tamaño, cantidad in SHIPS.items():
             
             # recorrer cada clave utilizando su rango
             for _ in range(cantidad):
