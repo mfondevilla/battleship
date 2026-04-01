@@ -140,9 +140,6 @@ def mostrar_menu():
   2. Instrucciones
   3. Salir
 
-  Tip: durante la partida escribe 'salir'
-       cuando se pida la letra para
-       abandonar en cualquier momento.
 ─────────────────────────────────────────
         """)
 
