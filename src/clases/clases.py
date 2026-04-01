@@ -79,16 +79,20 @@ class Tablero:
         if not (0 <= fila < self.BOARD_SIZE and 0 <= columna < self.BOARD_SIZE):
             return None, "Disparo fuera de rango"
         
-        if self.tablero_barcos[fila][columna] == WATER:
+        elif self.tablero_barcos[fila][columna] in (HIT, MISS):
+            return None, "Ya disparado"
+        
+        elif self.tablero_barcos[fila][columna] == WATER:
             self.tablero_barcos[fila][columna] = MISS
+            self.tablero_disparos[fila][columna] = MISS
             resultado = MISS, "Agua"
             
         elif self.tablero_barcos[fila][columna] == SHIP:
             self.tablero_barcos[fila][columna] = HIT
+            self.tablero_disparos[fila][columna] = HIT
             resultado = HIT, "Tocado"
             
-        elif self.tablero.barcos[fila][columna] in (HIT, MISS):
-            return None, "Ya disparado"
+        
             
         return resultado
     
