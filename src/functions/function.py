@@ -153,3 +153,11 @@ def mostrar_menu():
             return opcion
         else:
             print("Opción no válida. Elige 1, 2 o 3.")
+
+
+#### Para limpiar la pantalla cada vez que termine una ronda. Hay que llamarla en el .main 
+
+import os
+
+def limpiar_pantalla():
+    os.system("cls" if os.name == "nt" else "clear")
