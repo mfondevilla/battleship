@@ -14,3 +14,5 @@ SHIPS = {
     3 : 2,
     4 : 1
 }
+ERROR = "Error"
+REPEAT = "Repeat"
