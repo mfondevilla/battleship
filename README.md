@@ -1,4 +1,4 @@
-🚢 Battleship — Hundir la flota
+#  Battleship 🚢 Hundir la flota
 
 Battleship es un pequeño juego de consola escrito en Python. El objetivo es adivinar la posición de los barcos generada aleatoriamente por el programa.
 
