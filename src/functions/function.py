@@ -1,122 +1,155 @@
-### importar variables desde "variables"
-
-import sys
-sys.path.append("..")  # sube una carpeta
-
-from variables import variables
-
-
-### importar 'numpy' y 'random'
+# importar clases y variables
 
 import numpy as np
-import random
+from clases.clases import Tablero
+from variables.variables import (
+    VALID_LETTERS, VALID_NUMBERS, BOARD_SIZE,
+    SHIP, WATER, HIT, MISS, ERROR, REPEAT
+)
 
 
-### función de crear tablero
+#### validar cordenada según VALID_LETTERS Y VALID_NUMBERS
 
-from variables.variables import BOARD_SIZE, WATER
-
-def create_board (BOARD_SIZE, WATER):
-    board = np.full((BOARD_SIZE, BOARD_SIZE), WATER)
-    return board
-
-#### board_player = create_board (BOARD_SIZE, WATER)     ### crear tablero para jugador 
-#### board_pc = create_board (BOARD_SIZE, WATER)         ### crear tablero para la máquina
+def coordenada_valida(letra, numero):
+    return letra.upper() in VALID_LETTERS and numero in VALID_NUMBERS
 
 
 
-### función de colocar barcos
 
-from variables.variables import SHIPS
+### conversión a matriz de la coordenada recibida
 
-def place_ships(board, SHIPS, SHIP, WATER, seed=None):
-    np.random.seed(seed)
-    size = board.shape[0]
-
-    for ship_length, quantity in SHIPS.items():
-        for _ in range(quantity):
-            placed = False
-
-            while not placed:
-                # orientación: 0 = horizontal, 1 = vertical
-                orientation = np.random.randint(0, 2)
-
-                if orientation == 0:  # horizontal
-                    row = np.random.randint(0, size)
-                    col = np.random.randint(0, size - ship_length + 1)
-
-                    # comprobar si cabe
-                    if np.all(board[row, col:col + ship_length] == WATER):
-                        board[row, col:col + ship_length] = SHIP
-                        placed = True
-
-                else:  # vertical
-                    row = np.random.randint(0, size - ship_length + 1)
-                    col = np.random.randint(0, size)
-
-                    if np.all(board[row:row + ship_length, col] == WATER):
-                        board[row:row + ship_length, col] = SHIP
-                        placed = True
-
-    return board
-
-#### board_player   = place_ships(board_player,   SHIPS, SHIP, WATER, seed=42)
-#### board_pc = place_ships(board_pc, SHIPS, SHIP, WATER, seed=99)
-
-#### print(f"Este es tu tablero, jugador:\n\n{board_player}")
-
-###### print(f"Este es el tablero del pc:\n\n{board_pc}") Sólo para testear, no hay que printear
+def parsear_coordenada(letra, numero):
+    fila = numero - 1
+    columna = VALID_LETTERS.index(letra.upper())
+    return fila, columna
 
 
-### función de disparo
-
-### PARA EL .PY from variables.variables import HIT, MISS, WATER, SHIP
-
-def shot(tablero_barcos, tablero_disparos, SHIP, WATER, HIT, MISS):
-    
-    # pedimos coordenadas para hacerlo interactivo
-    row = int(input("Elige fila (0-9): "))
-    col = int(input("Elige columna (0-9): "))
-
-    # comprobar si ya se ha disparado ahí
-    if tablero_disparos[row, col] in [HIT, MISS]:
-        print("Ya has disparado aquí, elige otra casilla.")
-        return shot(tablero_barcos, tablero_disparos, SHIP, WATER, HIT, MISS)
-
-    # comprobar si es tocado o agua
-    if tablero_barcos[row, col] == SHIP:
-        tablero_disparos[row, col] = HIT
-        print("¡Tocado!")
-    else:
-        tablero_disparos[row, col] = MISS
-        print("¡Agua!")
-
-    return tablero_disparos
 
 
-### función de disparo aleatorio del pc
+### solicitamos la coordenada para disparar en el tablero del oponente
 
-### PARA EL .PY from variables.variables import HIT, MISS, WATER, SHIP
-
-def random_shot(tablero_barcos, tablero_disparos, SHIP, WATER, HIT, MISS):
-    
+def pedir_disparo():
     while True:
-        # elegir coordenadas aleatorias
-        row = np.random.randint(0, tablero_barcos.shape[0])
-        col = np.random.randint(0, tablero_barcos.shape[1])
+        try:
+            letra  = input("Introduce letra (A-J): ").strip().upper()
+            numero = int(input("Introduce número (1-10): ").strip())
 
-        # comprobar si ya se ha disparado ahí
-        if tablero_disparos[row, col] not in [HIT, MISS]:
+            if coordenada_valida(letra, numero):
+                return parsear_coordenada(letra, numero)
+            else:
+                print("Coordenada fuera de rango. Inténtalo de nuevo.")
+
+        except ValueError:
+            print("Entrada no válida. Introduce una letra y un número.")
+
+
+### generamos una coordenada aleatoria válida para simular un disparo de la CPU
+
+def disparo_cpu(tablero_obj):
+    while True:
+        fila    = np.random.randint(0, BOARD_SIZE)
+        columna = np.random.randint(0, BOARD_SIZE)
+
+        # solo dispara donde no haya disparado antes
+        if tablero_obj.tablero_barcos[fila][columna] not in (HIT, MISS):
+            return fila, columna
+
+
+### comprobar si hay ganador o si seguimos jugando
+
+def check_winner(tablero_obj):
+    return not np.any(tablero_obj.tablero_barcos == SHIP)
+
+
+
+### Gestiona el turno del jugador, solicita el disparo y llama al receive_shot del tablero de la CPU. Además,
+#   Si ya ha disparado ahí, le pide que elija otra coordenada.
+ 
+def turno_jugador(tablero_cpu):
+    while True:
+        shot = pedir_disparo()
+        resultado, mensaje = tablero_cpu.receive_shot(shot)
+
+        if resultado == REPEAT:
+            print("Ya habías disparado ahí. Elige otra coordenada.")
+        elif resultado == ERROR:
+            print(f"Error inesperado: {mensaje}")
+        else:
+            print(mensaje)  # "Tocado" o "Agua"
             break
 
-    # comprobar si es tocado o agua
-    if tablero_barcos[row, col] == SHIP:
-        tablero_disparos[row, col] = HIT
-        print(f"¡El pc ha disparado en ({row}, {col}) y ha tocado!")
-    else:
-        tablero_disparos[row, col] = MISS
-        print(f"¡El pc ha disparado en ({row}, {col}) y ha fallado!")
 
-    return tablero_disparos
+### Gestiona el turno de la CPU, y llama al receive_shot del tablero del jugador.
 
-#### random_shot(board_player, tablero_disparos_pc, SHIP, WATER, HIT, MISS)
+def turno_cpu(tablero_jugador):
+    shot = disparo_cpu(tablero_jugador)
+    resultado, mensaje = tablero_jugador.receive_shot(shot)
+    fila, columna = shot
+
+    # convertir índices de vuelta a formato legible
+    letra  = VALID_LETTERS[columna]
+    numero = fila + 1
+    print(f"La CPU ha disparado en {letra}{numero}: {mensaje}")
+
+
+### instrucciones del juego desde el menú
+def mostrar_instrucciones():
+
+    print("""
+─────────────────────────────────────────
+      INSTRUCCIONES - HUNDIR LA FLOTA
+─────────────────────────────────────────
+ Objetivo:
+   Hundir todos los barcos de la CPU antes
+   de que ella hunda los tuyos.
+
+ Cómo jugar:
+   - Introduce una letra (A-J) y un número
+     (1-10) para indicar dónde disparas.
+   - En cualquier momento puedes escribir
+     'salir' cuando se pida la letra para
+     abandonar la partida sin quedarte
+     atrapada en la consola.
+
+ Símbolos del tablero:
+   O  = Barco (solo visible en tu tablero)
+   X  = Tocado
+   *  = Agua
+   -  = Casilla sin disparar
+
+ Barcos en partida:
+   - 4 barcos de tamaño 1
+   - 3 barcos de tamaño 2
+   - 2 barcos de tamaño 3
+   - 1 barco  de tamaño 4
+
+ ¡Buena suerte!
+─────────────────────────────────────────
+    """)
+
+
+### para el menú inicial y devolver la opción elegida
+
+def mostrar_menu():
+    while True:
+        print("""
+─────────────────────────────────────────
+            HUNDIR LA FLOTA
+─────────────────────────────────────────
+  1. Nueva partida
+  2. Instrucciones
+  3. Salir
+
+─────────────────────────────────────────
+        """)
+
+        opcion = input("Elige una opción (1-3): ").strip()
+
+        if opcion == "1":
+            return opcion
+        elif opcion == "2":
+            mostrar_instrucciones()
+        elif opcion == "3":
+            return opcion
+        else:
+            print("Opción no válida. Elige 1, 2 o 3.")
