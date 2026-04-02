@@ -1,12 +1,11 @@
 # importar clases y variables
 
 import numpy as np
-from ..clases.clases import Tablero
+from ..clases.clases import Tablero, SalirJuego
 from ..variables.variables import (
     VALID_LETTERS, VALID_NUMBERS, BOARD_SIZE,
-    SHIP, WATER, HIT, MISS, ERROR, REPEAT
+    SHIP, WATER, HIT, MISS, ERROR, REPEAT, SHIPS
 )
-
 
 #### validar cordenada según VALID_LETTERS Y VALID_NUMBERS
 
@@ -32,6 +31,10 @@ def pedir_disparo():
     while True:
         try:
             letra  = input("Introduce letra (A-J): ").strip().upper()
+
+            if letra == "SALIR":
+                raise SalirJuego
+            
             numero = int(input("Introduce número (1-10): ").strip())
 
             if coordenada_valida(letra, numero):

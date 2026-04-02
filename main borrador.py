@@ -1,6 +1,6 @@
 # ── MAIN ───────────────────────────────────────────────────────────────────
 import numpy as np
-from src.clases.clases import Tablero
+from src.clases.clases import Tablero, SalirJuego
 from src.functions.function import (
     mostrar_menu,
     mostrar_instrucciones,
@@ -22,20 +22,22 @@ elif opcion == "1":
     jugador.place_ships()
     cpu.place_ships()
 
-    try:
-        while True:
+    partida_activa = True
 
+    while partida_activa:
+        try:
             # turno jugador
             limpiar_pantalla()
-            print("\n─── TU TABLERO DE DISPAROS ───")
-            jugador.display_disparos()
+            print("\n─── EL TABLERO DE LA CPU ───")
+            cpu.display_disparos()
 
             print("\n─── TU TURNO ───")
             turno_jugador(cpu)
 
             if check_winner(cpu):
                 print("\n¡Has ganado!")
-                break
+                partida_activa = False
+                continue
 
             # turno cpu
             print("\n─── TURNO DE LA CPU ───")
@@ -46,7 +48,11 @@ elif opcion == "1":
 
             if check_winner(jugador):
                 print("\n¡Ha ganado la CPU!")
-                break
+                partida_activa = False
 
-    except SalirJuego:
-        print("\nHas abandonado la partida. ¡Hasta luego!")
+        except Exception as e:
+            if type(e).__name__ == "SalirJuego":
+                print("\nHas abandonado la partida. ¡Hasta luego!")
+                partida_activa = False
+            else:
+                raise

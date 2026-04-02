@@ -16,3 +16,4 @@ SHIPS = {
 }
 ERROR = "Error"
 REPEAT = "Repeat"
+HIDDEN = "="
