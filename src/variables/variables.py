@@ -1,6 +1,6 @@
 #variables/variables.py
 
-BOARD_SIZE = 10,
+BOARD_SIZE = 10
 WATER = "-"
 SHIP = "O"
 HIT = "X"
@@ -14,3 +14,6 @@ SHIPS = {
     3 : 2,
     4 : 1
 }
+ERROR = "Error"
+REPEAT = "Repeat"
+HIDDEN = "="
