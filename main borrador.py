@@ -1,7 +1,7 @@
 # ── MAIN ───────────────────────────────────────────────────────────────────
 import numpy as np
-from clases.clases import Tablero
-from funciones.funciones import (
+from src.clases.clases import Tablero
+from src.functions.function import (
     mostrar_menu,
     mostrar_instrucciones,
     limpiar_pantalla,
