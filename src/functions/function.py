@@ -1,8 +1,8 @@
 # importar clases y variables
 
 import numpy as np
-from clases.clases import Tablero
-from variables.variables import (
+from ..clases.clases import Tablero
+from ..variables.variables import (
     VALID_LETTERS, VALID_NUMBERS, BOARD_SIZE,
     SHIP, WATER, HIT, MISS, ERROR, REPEAT
 )

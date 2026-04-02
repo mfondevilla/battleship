@@ -1,25 +1,10 @@
+# importar variables
+
 import numpy as np
-
-seed_partida = 1
-np.random.seed(seed_partida)
-
-BOARD_SIZE = 10
-WATER = "-"
-SHIP = "O"
-HIT = "X"
-MISS = "*"
-#validators
-VALID_LETTERS = "ABCDEFGHIJ"
-VALID_NUMBERS = list(range(1, BOARD_SIZE + 1))
-SHIPS = {
-    1 : 4,
-    2 : 3,
-    3 : 2,
-    4 : 1
-}
-
-ERROR = "Error"
-REPEAT = "Repeat"
+from ..variables.variables import (
+    VALID_LETTERS, VALID_NUMBERS, BOARD_SIZE,
+    SHIP, WATER, HIT, MISS, ERROR, REPEAT
+)
 
 class Tablero:
     """
