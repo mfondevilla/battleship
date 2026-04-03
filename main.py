@@ -34,14 +34,14 @@ def jugar():
 
             jugador.display_barcos()
 
-            cpu_is_winner = check_winner(jugador)
-            jugador_is_winner = check_winner(cpu)
+            cpu_gana = check_winner(jugador)
+            jugador_gana = check_winner(cpu)
 
-            if (cpu_is_winner):
+            if (cpu_gana):
                 print("Ha ganado CPU !")
 
                 return False
-            elif(jugador_is_winner):  
+            elif(jugador_gana):  
                 print("Has ganado! Enhorabuena!")
                 return False
 
