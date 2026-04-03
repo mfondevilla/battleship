@@ -19,7 +19,8 @@ def jugar():
     if opcion_elegida == '1':
         while (True):
             #cpu.display_barcos() # test para disparar todos los barcos de cpu
-                                  # es para hacer trampa y llegar al final de la partida
+                                  # es para hacer trampa y 
+                                  # llegar al final de la partida + rapido
             print("Turno Jugador")
 
             turno_jugador(cpu) # jugador selecciona coordenadas para atacar tablero de cpu
