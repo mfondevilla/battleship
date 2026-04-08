@@ -5,7 +5,7 @@ from src.functions.function import (
     mostrar_menu,
     turno_jugador,
     turno_cpu,
-    check_winner,
+    check_winner
 )
 
 def jugar():
@@ -16,7 +16,7 @@ def jugar():
     cpu.place_ships() # colocar los barcos random
     jugador.place_ships()
     
-    if opcion_elegida == '1':
+    if opcion_elegida == '1'or opcion_elegida == '4':
         while (True):
             #cpu.display_barcos() # test para disparar todos los barcos de cpu
                                   # es para hacer trampa y 
@@ -26,7 +26,10 @@ def jugar():
             turno_jugador(cpu) # jugador selecciona coordenadas para atacar tablero de cpu
             print("Tablero cpu")
 
-            cpu.display_disparos()
+            if opcion_elegida == 1:
+                cpu.display_disparos()
+            else: 
+                cpu.display_barcos()
             print("Turno CPU")
 
             turno_cpu(jugador)

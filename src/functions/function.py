@@ -142,17 +142,20 @@ def mostrar_menu():
   1. Nueva partida
   2. Instrucciones
   3. Salir
+  4. Demo
 
 ─────────────────────────────────────────
         """)
 
-        opcion = input("Elige una opción (1-3): ").strip()
+        opcion = input("Elige una opción (1-4): ").strip()
 
         if opcion == "1":
             return opcion
         elif opcion == "2":
             mostrar_instrucciones()
         elif opcion == "3":
+            return opcion
+        elif opcion == "4":
             return opcion
         else:
             print("Opción no válida. Elige 1, 2 o 3.")
