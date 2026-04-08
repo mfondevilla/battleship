@@ -26,7 +26,7 @@ def jugar():
             turno_jugador(cpu) # jugador selecciona coordenadas para atacar tablero de cpu
             print("Tablero cpu")
 
-            if opcion_elegida == 1:
+            if opcion_elegida == '1':
                 cpu.display_disparos()
             else: 
                 cpu.display_barcos()
