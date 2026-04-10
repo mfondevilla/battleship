@@ -41,6 +41,7 @@ Dentro de `src` el código se organiza en los siguientes directorios:
 
 ## Autores
 
+Paula Comas
 Ana Corrochano  
 Melania Fondevilla  
 María Rodríguez  
