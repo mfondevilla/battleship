@@ -13,17 +13,22 @@ def jugar():
     opcion_elegida = mostrar_menu()
     jugador = Tablero("Jugador")
     cpu = Tablero("CPU")
-    cpu.place_ships() # colocar los barcos random
+    cpu.place_ships()
     jugador.place_ships()
     
-    if opcion_elegida == '1'or opcion_elegida == '4':
-        while (True):
-            #cpu.display_barcos() # test para disparar todos los barcos de cpu
-                                  # es para hacer trampa y 
-                                  # llegar al final de la partida + rapido
-            print("Turno Jugador")
+    if opcion_elegida == '1' or opcion_elegida == '4':
+        # Mostrar tableros iniciales ANTES del bucle
+        print("Tablero cpu")
+        if opcion_elegida == '1':
+            cpu.display_disparos()
+        else:
+            cpu.display_barcos()
+        print("Tablero jugador")
+        jugador.display_barcos()
 
-            turno_jugador(cpu) # jugador selecciona coordenadas para atacar tablero de cpu
+        while True:
+            print("Turno Jugador")
+            turno_jugador(cpu)
             print("Tablero cpu")
 
             if opcion_elegida == '1':
@@ -40,15 +45,14 @@ def jugar():
             cpu_gana = check_winner(jugador)
             jugador_gana = check_winner(cpu)
 
-            if (cpu_gana):
+            if cpu_gana:
                 print("Ha ganado CPU !")
-
                 return False
-            elif(jugador_gana):  
+            elif jugador_gana:  
                 print("Has ganado! Enhorabuena!")
                 return False
 
-
     elif opcion_elegida == '3':
-        return # se sale del juego
+        return
+
 jugar()
